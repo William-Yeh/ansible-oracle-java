@@ -1,0 +1,12 @@
+---
+# file: tasks/main.yml
+# Top-level installer for Oracle JDK.
+#
+
+- name: delegate to APT system for installation
+  include: use-apt.yml
+  when: ansible_pkg_mgr == "apt"
+
+- name: delegate to RPM system for installation
+  include: use-rpm.yml
+  when: ansible_os_family == "RedHat"

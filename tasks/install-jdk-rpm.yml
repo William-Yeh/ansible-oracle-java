@@ -1,0 +1,61 @@
+#
+# install Oracle JDK 1.x on CentOS
+#
+# Adapted from: http://blog.trifork.com/2013/04/02/ansible-example-playbook-to-setup-jenkins-slave/
+# See also: http://java.dzone.com/articles/installing-oracle-java6-ubuntu
+#
+
+- name: uninstall messy packages to avoid blocking conditions
+  sudo: True
+  script: ../files/uninstall-messy-jdk-packages.sh
+
+- name: delete messy .rpm files to avoid blocking conditions
+  sudo: True
+  script: ../files/delete-messy-rpm-files.sh  {{ jdk_download_path }}
+
+
+
+
+- name: get JDK 1.7 tarball (as RPM file)
+  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk7.jdk_tarball_file }}  {{ jdk7.jdk_tarball_url }}
+  args:
+    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk7.jdk_version }}"
+    chdir:   "{{ jdk_download_path }}"
+  when: java_version == 7
+
+- name: get JDK 1.8 tarball (as RPM file)
+  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk8.jdk_tarball_file }}  {{ jdk8.jdk_tarball_url }}
+  args:
+    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk8.jdk_version }}"
+    chdir:   "{{ jdk_download_path }}"
+  when: java_version == 8
+
+
+
+
+- name: install JDK 1.7
+  sudo: True
+  command: rpm --force -Uvh  {{ jdk7.jdk_tarball_file }}
+  args:
+    creates: "{{ jdk_download_path }}/jdk-{{ jdk7.jdk_version }}"
+    chdir:   "{{ jdk_download_path }}"
+  when: java_version == 7
+
+- name: install JDK 1.8
+  sudo: True
+  command: rpm --force -Uvh  {{ jdk8.jdk_tarball_file }}
+  args:
+    creates: "{{ jdk_download_path }}/jdk-{{ jdk8.jdk_version }}"
+    chdir:   "{{ jdk_download_path }}"
+  when: java_version == 8
+
+
+
+
+- name: clean up - uninstall messy packages
+  sudo: True
+  script: ../files/uninstall-messy-jdk-packages.sh
+
+- name: clean up - delete messy .rpm files
+  sudo: True
+  script: ../files/delete-messy-rpm-files.sh  {{ jdk_download_path }}
