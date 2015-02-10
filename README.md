@@ -5,7 +5,7 @@ williamyeh.oracle-java for Ansible Galaxy
 
 ## Summary
 
-Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/list#/roles/XXXX)**
+Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/list#/roles/2851)**
 
 This Ansible role has the following features for Oracle JDK:
 
