@@ -12,6 +12,8 @@ This Ansible role has the following features for Oracle JDK:
  - Install JDK 7 or 8 version.
  - Install for CentOS and Debian/Ubuntu families.
 
+If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/list#/roles/1209).
+
 
 ## Role Variables
 
