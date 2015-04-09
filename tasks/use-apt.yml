@@ -13,7 +13,7 @@
 
 - name: Import WebUpd8 PGP key
   sudo: True
-  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+  apt_key: keyserver=keyserver.ubuntu.com id=0xEEA14886 state=present
 
 - name: add the WebUpd8 Oracle Java PPA repository (for Ubuntu)
   sudo: True
@@ -35,7 +35,7 @@
 
 - name: automatically accept the Oracle license
   sudo: True
-  shell: echo "oracle-java{{ java_version }}-installer" shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+  debconf: name="oracle-java{{ java_version }}-installer" question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
 - name: install JDK
   sudo: True
