@@ -3,6 +3,10 @@ williamyeh.oracle-java for Ansible Galaxy
 ============
 
 
+[![Build Status](https://travis-ci.org/William-Yeh/ansible-oracle-java.svg?branch=master)](https://travis-ci.org/William-Yeh/ansible-oracle-java)
+
+
+
 ## Summary
 
 Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/list#/roles/2851)**

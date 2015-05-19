@@ -1,0 +1,19 @@
+install:
+  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+
+script:
+  - echo "==> Building the main Docker image..."
+  - ./run 'docker build -f test/Dockerfile-ubuntu14.04 -t java_img .  &&  docker run -i java_img 2> result-ubuntu14.04'
+  - ./run 'docker build -f test/Dockerfile-ubuntu12.04 -t java_img .  &&  docker run -i java_img 2> result-ubuntu12.04'
+  - ./run 'docker build -f test/Dockerfile-debian8     -t java_img .  &&  docker run -i java_img 2> result-debian8    '
+  - ./run 'docker build -f test/Dockerfile-debian7     -t java_img .  &&  docker run -i java_img 2> result-debian7    '
+  - ./run 'docker build -f test/Dockerfile-centos7     -t java_img .  &&  docker run -i java_img 2> result-centos7    '
+  - ./run 'docker build -f test/Dockerfile-centos6     -t java_img .  &&  docker run -i java_img 2> result-centos6    '
+
+  - echo "==> Validating the test results..."
+  - sh -c "[ -s result-ubuntu14.04 ]"
+  - sh -c "[ -s result-ubuntu12.04 ]"
+  - sh -c "[ -s result-debian8     ]"
+  - sh -c "[ -s result-debian7     ]"
+  - sh -c "[ -s result-centos7     ]"
+  - sh -c "[ -s result-centos6     ]"
