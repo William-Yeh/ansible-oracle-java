@@ -3,9 +3,6 @@ williamyeh.oracle-java for Ansible Galaxy
 ============
 
 
-[![Build Status](https://travis-ci.org/William-Yeh/ansible-oracle-java.svg?branch=master)](https://travis-ci.org/William-Yeh/ansible-oracle-java)
-
-
 
 ## Summary
 

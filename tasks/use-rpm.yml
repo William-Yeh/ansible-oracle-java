@@ -32,11 +32,9 @@
 
 
 - name: update /etc/alternatives settings for Java 7
-  sudo: True
   script: ../files/update-alternatives.sh  "{{ jdk7.jdk_version }}"
   when: java_version == 7
 
 - name: update /etc/alternatives settings for Java 8
-  sudo: True
   script: ../files/update-alternatives.sh  "{{ jdk8.jdk_version }}"
   when: java_version == 8

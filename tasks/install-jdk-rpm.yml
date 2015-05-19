@@ -6,11 +6,9 @@
 #
 
 - name: uninstall messy packages to avoid blocking conditions
-  sudo: True
   script: ../files/uninstall-messy-jdk-packages.sh
 
 - name: delete messy .rpm files to avoid blocking conditions
-  sudo: True
   script: ../files/delete-messy-rpm-files.sh  {{ jdk_download_path }}
 
 
@@ -34,7 +32,6 @@
 
 
 - name: install JDK 1.7
-  sudo: True
   command: rpm --force -Uvh  {{ jdk7.jdk_tarball_file }}
   args:
     creates: "{{ jdk_download_path }}/jdk-{{ jdk7.jdk_version }}"
@@ -42,7 +39,6 @@
   when: java_version == 7
 
 - name: install JDK 1.8
-  sudo: True
   command: rpm --force -Uvh  {{ jdk8.jdk_tarball_file }}
   args:
     creates: "{{ jdk_download_path }}/jdk-{{ jdk8.jdk_version }}"
@@ -53,9 +49,7 @@
 
 
 - name: clean up - uninstall messy packages
-  sudo: True
   script: ../files/uninstall-messy-jdk-packages.sh
 
 - name: clean up - delete messy .rpm files
-  sudo: True
   script: ../files/delete-messy-rpm-files.sh  {{ jdk_download_path }}
