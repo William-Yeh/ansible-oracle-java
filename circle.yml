@@ -5,6 +5,7 @@ machine:
 dependencies:
   override:
     - docker info
+    - docker version
     - docker build  -f test/Dockerfile-ubuntu14.04  -t java_trusty   .
     - docker build  -f test/Dockerfile-ubuntu12.04  -t java_precise  .
     - docker build  -f test/Dockerfile-debian8      -t java_jessie   .
