@@ -6,12 +6,24 @@ dependencies:
   override:
     - docker info
     - docker version
-    - docker build  -f test/Dockerfile-ubuntu14.04  -t java_trusty   .
-    - docker build  -f test/Dockerfile-ubuntu12.04  -t java_precise  .
-    - docker build  -f test/Dockerfile-debian8      -t java_jessie   .
-    - docker build  -f test/Dockerfile-debian7      -t java_wheezy   .
-    - docker build  -f test/Dockerfile-centos7      -t java_centos7  .
-    - docker build  -f test/Dockerfile-centos6      -t java_centos6  .
+
+    - cp test/Dockerfile-ubuntu14.04 Dockerfile
+    - docker build  -t java_trusty   .
+
+    - cp test/Dockerfile-ubuntu12.04 Dockerfile
+    - docker build  -t java_precise  .
+
+    - cp test/Dockerfile-debian8 Dockerfile
+    - docker build  -t java_jessie   .
+
+    - cp test/Dockerfile-debian7 Dockerfile
+    - docker build  -t java_wheezy   .
+
+    - cp test/Dockerfile-centos7 Dockerfile
+    - docker build  -t java_centos7  .
+
+    - cp test/Dockerfile-centos6 Dockerfile
+    - docker build  -t java_centos6  .
 
 test:
   override:

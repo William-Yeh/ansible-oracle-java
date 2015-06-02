@@ -3,6 +3,8 @@ williamyeh.oracle-java for Ansible Galaxy
 ============
 
 
+[![Circle CI](https://circleci.com/gh/William-Yeh/ansible-oracle-java.svg?style=shield)](https://circleci.com/gh/William-Yeh/ansible-oracle-java)
+
 
 ## Summary
 
