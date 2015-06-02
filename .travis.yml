@@ -1,3 +1,10 @@
+env:
+  global:
+    - BRANCH=stable
+    - QUIET=1
+    - UML_DOCKERCOMPOSE=0
+    - UML_FIG=0
+
 sudo: true
 
 install:
