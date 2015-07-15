@@ -22,6 +22,7 @@ test:
     - docker run -i java_wheezy   2> result-debian7
     - docker run -i java_centos7  2> result-centos7
     - docker run -i java_centos6  2> result-centos6
+
     - echo "==> Validating the test results..."
     - sh -c "[ -s result-ubuntu14.04 ]"
     - sh -c "[ -s result-ubuntu12.04 ]"
@@ -29,3 +30,6 @@ test:
     - sh -c "[ -s result-debian7     ]"
     - sh -c "[ -s result-centos7     ]"
     - sh -c "[ -s result-centos6     ]"
+
+    - echo "==> Backing up RPM files..."
+    - docker run -v $CIRCLE_ARTIFACTS:/dist  java_centos7  cp /tmp/jdk*.rpm /dist
