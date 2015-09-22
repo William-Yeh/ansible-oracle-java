@@ -6,7 +6,7 @@
 if [[ $# < 1 ]]; then
     echo "Missing argument: jdk_version"
     exit 1
-fi 
+fi
 
 
 jdk_version=$1
@@ -54,10 +54,11 @@ else
 
     # set java link
     update-alternatives --verbose  \
-        --install /usr/bin/java   java   /usr/java/default/bin/java 1  \
-        --slave   /usr/bin/javac  javac  /usr/java/default/bin/javac   \
-        --slave   /usr/bin/jar    jar    /usr/java/default/bin/jar
+        --install /usr/bin/java     java     /usr/java/default/bin/java 1  \
+        --slave   /usr/bin/javac    javac    /usr/java/default/bin/javac   \
+        --slave   /usr/bin/jar      jar      /usr/java/default/bin/jar     \
+        --slave   /usr/lib/jvm/java java_sdk /usr/java/default
 
-    echo "1" | update-alternatives --config java 
+    echo "1" | update-alternatives --config java
 
 fi

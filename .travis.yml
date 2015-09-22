@@ -1,28 +1,30 @@
-env:
-  global:
-    - BRANCH=stable
-    - QUIET=1
-    - UML_DOCKERCOMPOSE=0
-    - UML_FIG=0
-
 sudo: true
+services:
+    - docker
 
-install:
-  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+before_install:
+    - docker info
+    - docker version
+
+    - docker build  -f test/Dockerfile-ubuntu14.04  -t java_trusty   .
+    - docker build  -f test/Dockerfile-ubuntu12.04  -t java_precise  .
+    - docker build  -f test/Dockerfile-debian8      -t java_jessie   .
+    - docker build  -f test/Dockerfile-debian7      -t java_wheezy   .
+    - docker build  -f test/Dockerfile-centos7      -t java_centos7  .
+    - docker build  -f test/Dockerfile-centos6      -t java_centos6  .
 
 script:
-  - echo "==> Building the main Docker image..."
-  - ./run 'docker build -f test/Dockerfile-ubuntu14.04 -t java_img .  &&  docker run -i java_img 2> result-ubuntu14.04'
-  - ./run 'docker build -f test/Dockerfile-ubuntu12.04 -t java_img .  &&  docker run -i java_img 2> result-ubuntu12.04'
-  - ./run 'docker build -f test/Dockerfile-debian8     -t java_img .  &&  docker run -i java_img 2> result-debian8    '
-  - ./run 'docker build -f test/Dockerfile-debian7     -t java_img .  &&  docker run -i java_img 2> result-debian7    '
-  - ./run 'docker build -f test/Dockerfile-centos7     -t java_img .  &&  docker run -i java_img 2> result-centos7    '
-  - ./run 'docker build -f test/Dockerfile-centos6     -t java_img .  &&  docker run -i java_img 2> result-centos6    '
+    - docker run -i java_trusty   2> result-ubuntu14.04
+    - docker run -i java_precise  2> result-ubuntu12.04
+    - docker run -i java_jessie   2> result-debian8
+    - docker run -i java_wheezy   2> result-debian7
+    - docker run -i java_centos7  2> result-centos7
+    - docker run -i java_centos6  2> result-centos6
 
-  - echo "==> Validating the test results..."
-  - sh -c "[ -s result-ubuntu14.04 ]"
-  - sh -c "[ -s result-ubuntu12.04 ]"
-  - sh -c "[ -s result-debian8     ]"
-  - sh -c "[ -s result-debian7     ]"
-  - sh -c "[ -s result-centos7     ]"
-  - sh -c "[ -s result-centos6     ]"
+    - echo "==> Validating the test results..."
+    - sh -c "[ -s result-ubuntu14.04 ]"
+    - sh -c "[ -s result-ubuntu12.04 ]"
+    - sh -c "[ -s result-debian8     ]"
+    - sh -c "[ -s result-debian7     ]"
+    - sh -c "[ -s result-centos7     ]"
+    - sh -c "[ -s result-centos6     ]"
