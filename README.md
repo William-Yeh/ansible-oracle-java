@@ -32,11 +32,14 @@ User-configurable defaults:
 # which version?
 java_version: 8
 
+# which subversion?
+java_subversion: 60
+
 # which directory to put the download file (for CentOS families)?
 jdk_download_path: /tmp
 ```
 
-For other configurable internals, read `defaults/main.yml` file.
+For other configurable internals, read `tasks/set-role-variables.yml` file.
 
 
 ## Usage

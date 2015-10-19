@@ -3,38 +3,13 @@
 # Configure Oracle JDK common settings.
 #
 
-- name: precondition - java_version
-  fail: msg="ERROR - required variable 'java_version' missing."
-  when: java_version is not defined
+- name: check if specific version of Oracle JDK is installed?
+  script: ../files/check-rpm-installed.sh  "{{ jdk_version }}"
+  register: jdk_info
+  changed_when: false
+  failed_when: jdk_info.rc > 0
 
-
-
-- name: check if Oracle JDK 1.7 is installed?
-  script: ../files/check-rpm-installed.sh  "{{ jdk7.jdk_version }}"
-  when: java_version == 7
-  register: jdk7_info
-
-- name: check if Oracle JDK 1.8 is installed?
-  script: ../files/check-rpm-installed.sh  "{{ jdk8.jdk_version }}"
-  when: java_version == 8
-  register: jdk8_info
-
-#- debug: msg="{{ jdk7_info }}"
-#- debug: msg="{{ jdk8_info }}"
+#- debug: msg="{{ jdk_info }}"
 
 - include: install-jdk-rpm.yml
-  when: java_version == 7  and  (jdk7_info.stdout|from_json).not_found
-
-- name: install with Java 8 RPM
-  include: install-jdk-rpm.yml
-  when: java_version == 8  and  (jdk8_info.stdout|from_json).not_found
-
-
-
-- name: update /etc/alternatives settings for Java 7
-  script: ../files/update-alternatives.sh  "{{ jdk7.jdk_version }}"
-  when: java_version == 7
-
-- name: update /etc/alternatives settings for Java 8
-  script: ../files/update-alternatives.sh  "{{ jdk8.jdk_version }}"
-  when: java_version == 8
+  when: (jdk_info.stdout|from_json).not_found

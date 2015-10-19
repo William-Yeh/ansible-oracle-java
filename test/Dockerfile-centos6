@@ -14,8 +14,11 @@ MAINTAINER William Yeh <william.pjyeh@gmail.com>
 # build phase
 #
 
+RUN echo "===> Installing the missing "tar" utility for Docker image..."  && \
+    yum -y install tar
+
 ENV PLAYBOOK test.yml
-RUN ansible-playbook-wrapper -vvv --extra-vars "nginx_in_selinux=False"
+RUN ansible-playbook-wrapper -vvv
 
 
 

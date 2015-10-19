@@ -1,0 +1,18 @@
+---
+# file: use-tarball.yml
+# Install Oracle JDK 1.x on distributions other than Red Hat family.
+#
+
+- name: copy scripts to server
+  copy: src="../files/check-tarball-installed.sh"  dest="/tmp/"  mode="a+x"
+
+- name: check if specific version of Oracle JDK is installed?
+  shell: LC_ALL="en_US.UTF-8"  /tmp/check-tarball-installed.sh  "{{ jdk_version }}"
+  register: jdk_info
+  changed_when: false
+  failed_when: jdk_info.rc > 0
+
+#- debug: msg="{{ jdk_info }}"
+
+- include: install-jdk-tarball.yml
+  when: (jdk_info.stdout|from_json).not_found

@@ -12,40 +12,18 @@
   script: ../files/delete-messy-rpm-files.sh  {{ jdk_download_path }}
 
 
-
-
-- name: get JDK 1.7 tarball (as RPM file)
-  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk7.jdk_tarball_file }}  {{ jdk7.jdk_tarball_url }}
+- name: get JDK tarball (as RPM file)
+  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.rpm  {{ jdk_tarball_url }}.rpm
   args:
-    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk7.jdk_version }}"
+    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk_version }}"
     chdir:   "{{ jdk_download_path }}"
-  when: java_version == 7
 
-- name: get JDK 1.8 tarball (as RPM file)
-  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk8.jdk_tarball_file }}  {{ jdk8.jdk_tarball_url }}
+
+- name: install JDK
+  command: rpm --force -Uvh  {{ jdk_tarball_file }}.rpm
   args:
-    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk8.jdk_version }}"
+    creates: "{{ jdk_download_path }}/jdk-{{ jdk_version }}"
     chdir:   "{{ jdk_download_path }}"
-  when: java_version == 8
-
-
-
-
-- name: install JDK 1.7
-  command: rpm --force -Uvh  {{ jdk7.jdk_tarball_file }}
-  args:
-    creates: "{{ jdk_download_path }}/jdk-{{ jdk7.jdk_version }}"
-    chdir:   "{{ jdk_download_path }}"
-  when: java_version == 7
-
-- name: install JDK 1.8
-  command: rpm --force -Uvh  {{ jdk8.jdk_tarball_file }}
-  args:
-    creates: "{{ jdk_download_path }}/jdk-{{ jdk8.jdk_version }}"
-    chdir:   "{{ jdk_download_path }}"
-  when: java_version == 8
-
-
 
 
 - name: clean up - uninstall messy packages
