@@ -14,6 +14,9 @@
 
 - include: set-role-variables.yml
 
+- name: install curl
+  apt_rpm: name=curl state=present update_cache=yes
+
 - name: delegate to APT system for installation
   include: use-tarball.yml
   when: ansible_pkg_mgr != "rpm"
