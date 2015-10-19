@@ -15,7 +15,7 @@
 - include: set-role-variables.yml
 
 - name: install curl
-  action: "{{ ansible_pkg_mgr }} name={{ item }} state=present"
+  action: "{{ ansible_pkg_mgr }} name=curl state=present"
 
 - name: delegate to APT system for installation
   include: use-tarball.yml
