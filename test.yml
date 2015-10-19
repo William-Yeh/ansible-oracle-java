@@ -6,4 +6,5 @@
     - 'defaults/main.yml'
 
   vars:
-    java_version: 8
+    #java_version: 8
+    #java_subversion: 60

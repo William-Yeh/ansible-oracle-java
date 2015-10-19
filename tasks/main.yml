@@ -3,10 +3,39 @@
 # Top-level installer for Oracle JDK.
 #
 
+- name: precondition - java_version
+  fail: msg="ERROR - required variable 'java_version' missing."
+  when: java_version is not defined
+
+- name: precondition - java_subversion
+  fail: msg="ERROR - required variable 'java_subversion' missing."
+  when: java_subversion is not defined
+
+
+- include: set-role-variables.yml
+
 - name: delegate to APT system for installation
-  include: use-apt.yml
-  when: ansible_pkg_mgr == "apt"
+  include: use-tarball.yml
+  when: ansible_pkg_mgr != "rpm"
 
 - name: delegate to RPM system for installation
   include: use-rpm.yml
-  when: ansible_os_family == "RedHat"
+  when: ansible_pkg_mgr == "rpm"
+
+
+
+- name: link /usr/java/default
+  file: dest=/usr/java/default src="/usr/java/jdk{{ jdk_version }}" state=link
+
+- name: alternatives link for "java"
+  alternatives: name=java link=/usr/bin/java  path=/usr/java/default/bin/java
+
+- name: alternatives link for "javac"
+  alternatives: name=javac link=/usr/bin/javac  path=/usr/java/default/bin/javac
+
+- name: alternatives link for "jar"
+  alternatives: name=jar link=/usr/bin/jar  path=/usr/java/default/bin/jar
+
+- name: alternatives link for "java_sdk"
+  alternatives: name=java_sdk link=/usr/lib/jvm/java  path=/usr/java/default
+  ignore_errors: true
