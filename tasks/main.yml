@@ -19,11 +19,11 @@
 
 - name: delegate to APT system for installation
   include: use-tarball.yml
-  when: ansible_pkg_mgr != "rpm"
+  when: ansible_pkg_mgr != "yum"
 
 - name: delegate to RPM system for installation
   include: use-rpm.yml
-  when: ansible_pkg_mgr == "rpm"
+  when: ansible_pkg_mgr == "yum"
 
 
 
