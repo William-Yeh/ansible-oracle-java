@@ -3,6 +3,13 @@
 # set necessary role variables.
 #
 
+- name: set internal vars for 1.8.0_65
+  set_fact:
+    jdk_version:      1.8.0_65
+    jdk_tarball_file: jdk-8u65-linux-x64
+    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64
+  when: java_version == 8 and java_subversion == 65
+
 - name: set internal vars for 1.8.0_60
   set_fact:
     jdk_version:      1.8.0_60
