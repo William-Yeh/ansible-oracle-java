@@ -7,7 +7,7 @@ williamyeh.oracle-java for Ansible Galaxy
 
 ## Summary
 
-Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/list#/roles/2851)**
+Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/detail#/role/2851)**
 
 This Ansible role has the following features for Oracle JDK:
 
@@ -36,7 +36,10 @@ java_version: 8
 java_subversion: 65
 
 # which directory to put the download file (for CentOS families)?
-jdk_download_path: /tmp
+java_download_path: /tmp
+
+# remove temporary downloaded files?
+java_remove_download: true
 ```
 
 For other configurable internals, read `tasks/set-role-variables.yml` file.

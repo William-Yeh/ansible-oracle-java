@@ -4,10 +4,10 @@
 #
 
 - name: copy scripts to server
-  copy: src="../files/check-tarball-installed.sh"  dest="/tmp/"  mode="a+x"
+  copy: src="../files/check-tarball-installed.sh"  dest="{{ java_download_path }}/"  mode="a+x"
 
 - name: check if specific version of Oracle JDK is installed?
-  shell: LC_ALL="en_US.UTF-8"  /tmp/check-tarball-installed.sh  "{{ jdk_version }}"
+  shell: LC_ALL="en_US.UTF-8"  {{ java_download_path }}/check-tarball-installed.sh  "{{ jdk_version }}"
   register: jdk_info
   changed_when: false
   failed_when: jdk_info.rc > 0
