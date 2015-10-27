@@ -3,7 +3,7 @@
 
 galaxy_info:
     author: williamyeh
-    description: Install and configure Oracle JDK
+    description: Install and configure Oracle JDK 7/8 for CentOS/Debian/Ubuntu
     license: Apache
 
     # for the `playbook_dir` bug:
@@ -26,5 +26,9 @@ galaxy_info:
     categories:
         - development
         - system
+    galaxy_tags:
+        - development:java
+        - development:jdk
+        - system:jvm
 
 dependencies: []
