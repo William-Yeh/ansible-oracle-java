@@ -7,8 +7,8 @@
 - name: get JDK tarball (as tar.gz file)
   command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.tar.gz  {{ jdk_tarball_url }}.tar.gz
   args:
-    creates: "{{ jdk_download_path }}/jdk-tarball-{{ jdk_version }}"
-    chdir:   "{{ jdk_download_path }}"
+    creates: "{{ java_download_path }}/jdk-tarball-{{ jdk_version }}"
+    chdir:   "{{ java_download_path }}"
 
 - name: mkdir for Java
   file:
@@ -20,7 +20,7 @@
 
 - name: install JDK
   unarchive:
-    src: "{{ jdk_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+    src: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
     dest: "/usr/java"
     owner: root
     group: root

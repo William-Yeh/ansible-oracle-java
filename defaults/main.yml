@@ -13,4 +13,5 @@
 java_version: 8
 java_subversion: 65
 
-jdk_download_path: /tmp
+java_download_path: /tmp
+java_remove_download: true
