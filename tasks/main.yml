@@ -39,9 +39,13 @@
 - name: alternatives link for "jar"
   alternatives: name=jar link=/usr/bin/jar  path=/usr/java/default/bin/jar
 
+- name: check if "java_sdk" target exists
+  stat: path=/usr/lib/jvm/java
+  register: filecheck
+
 - name: alternatives link for "java_sdk"
   alternatives: name=java_sdk link=/usr/lib/jvm/java  path=/usr/java/default
-  ignore_errors: true
+  when: filecheck.stat.exists
 
 
 
