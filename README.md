@@ -35,6 +35,10 @@ java_version: 8
 # which subversion?
 java_subversion: 66
 
+# package manager
+ansible_pkg_mgr: yum
+# or ansible_pkg_mgr: notyum
+
 # which directory to put the download file (for CentOS families)?
 java_download_path: /tmp
 
@@ -42,8 +46,8 @@ java_download_path: /tmp
 java_remove_download: true
 ```
 
-For other configurable internals, read `tasks/set-role-variables.yml` file.
-
+For other configurable internals, read `tasks/set-role-variables.yml` file. For
+example, supported java_version/java_subversion combinations.
 
 ## Usage
 
