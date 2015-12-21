@@ -38,6 +38,11 @@ java_subversion: 66
 # which directory to put the download file (for CentOS families)?
 java_download_path: /tmp
 
+# rpm/tar.gz file location:
+#   - true: download from Oracle on-the-fly;
+#   - false: copy from `{{ playbook_dir }}/files`.
+java_download_from_oracle: true
+
 # remove temporary downloaded files?
 java_remove_download: true
 ```
@@ -70,6 +75,30 @@ Simple example:
   vars:
     java_version: 8
 ```
+
+
+### (Optionally) pre-fetch .rpm and .tar.gz files
+
+For some reasons, you may want to pre-fetch .rpm and .tar.gz files as part of the playbook suite, instead of downloading from Oracle on-the-fly.
+
+To do this, put the file on the `{{ playbook_dir }}/files` directory in advance, and then set the `java_download_from_oracle` variable to `false`:
+
+```yaml
+---
+# file: prefetch-playbook.yml
+
+- hosts: all
+
+  roles:
+    - williamyeh.oracle-java
+
+  vars:
+    java_version: 8
+    java_download_from_oracle: false
+```
+
+
+
 
 
 

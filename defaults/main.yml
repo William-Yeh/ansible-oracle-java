@@ -14,4 +14,5 @@ java_version: 8
 java_subversion: 66
 
 java_download_path: /tmp
+java_download_from_oracle: true
 java_remove_download: true

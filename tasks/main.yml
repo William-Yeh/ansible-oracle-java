@@ -11,19 +11,35 @@
   fail: msg="ERROR - required variable 'java_subversion' missing."
   when: java_subversion is not defined
 
-
 - include: set-role-variables.yml
 
-- name: install curl
-  action: "{{ ansible_pkg_mgr }} name=curl state=present"
 
-- name: delegate to APT system for installation
-  include: use-tarball.yml
-  when: ansible_pkg_mgr != "yum"
 
-- name: delegate to RPM system for installation
+- name: fetch .rpm or .tar.gz files from Oracle site
+  include: fetch.yml
+  when: java_download_from_oracle
+
+- name: copy RPM from local
+  copy:
+    src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.rpm"
+    dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+  when: not java_download_from_oracle and ansible_pkg_mgr == "yum"
+
+- name: copy tarball from local
+  copy:
+    src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.tar.gz"
+    dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+  when: not java_download_from_oracle and ansible_pkg_mgr != "yum"
+
+
+
+- name: delegate to RPM installation process
   include: use-rpm.yml
   when: ansible_pkg_mgr == "yum"
+
+- name: delegate to raw tarball installation
+  include: use-tarball.yml
+  when: ansible_pkg_mgr != "yum"
 
 
 

@@ -1,5 +1,7 @@
 - hosts: all
-  sudo: True
+  #sudo: True
+  become: yes
+  become_method: sudo
   tasks:
     - include: 'tasks/main.yml'
   vars_files:
@@ -7,4 +9,4 @@
 
   vars:
     #java_version: 8
-    #java_subversion: 60
+    #java_subversion: 66

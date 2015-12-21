@@ -12,13 +12,6 @@
   script: ../files/delete-messy-rpm-files.sh  {{ java_download_path }}
 
 
-- name: get JDK tarball (as RPM file)
-  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.rpm  {{ jdk_tarball_url }}.rpm
-  args:
-    creates: "{{ java_download_path }}/jdk-tarball-{{ jdk_version }}"
-    chdir:   "{{ java_download_path }}"
-
-
 - name: install JDK
   command: rpm --force -Uvh  {{ jdk_tarball_file }}.rpm
   args:

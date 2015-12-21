@@ -4,12 +4,6 @@
 # See: http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html
 #
 
-- name: get JDK tarball (as tar.gz file)
-  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.tar.gz  {{ jdk_tarball_url }}.tar.gz
-  args:
-    creates: "{{ java_download_path }}/jdk-tarball-{{ jdk_version }}"
-    chdir:   "{{ java_download_path }}"
-
 - name: mkdir for Java
   file:
     path: "/usr/java/jdk{{ jdk_version }}"

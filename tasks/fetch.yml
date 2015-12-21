@@ -1,0 +1,20 @@
+#
+# fetch .rpm or .tar.gz files
+#
+
+- name: install curl
+  action: "{{ ansible_pkg_mgr }} name=curl state=present"
+
+- name: get JDK tarball (as RPM file)
+  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.rpm  {{ jdk_tarball_url }}.rpm
+  args:
+    creates: "{{ java_download_path }}/jdk-tarball-{{ jdk_version }}"
+    chdir:   "{{ java_download_path }}"
+  when: ansible_pkg_mgr == "yum"
+
+- name: get JDK tarball (as tar.gz file)
+  command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o {{ jdk_tarball_file }}.tar.gz  {{ jdk_tarball_url }}.tar.gz
+  args:
+    creates: "{{ java_download_path }}/jdk-tarball-{{ jdk_version }}"
+    chdir:   "{{ java_download_path }}"
+  when: ansible_pkg_mgr != "yum"

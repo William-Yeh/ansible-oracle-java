@@ -1,0 +1,17 @@
+- hosts: all
+  #sudo: True
+  become: yes
+  become_method: sudo
+  tasks:
+    - include: tasks/set-role-variables.yml
+    - name: fetch .rpm or .tar.gz files from Oracle site
+      include: tasks/fetch.yml
+
+  #vars_files:
+  #  - 'defaults/main.yml'
+
+  vars:
+    - java_version: 8
+    - java_subversion: 66
+    - java_download_path: /tmp
+    - java_download_from_oracle: false
