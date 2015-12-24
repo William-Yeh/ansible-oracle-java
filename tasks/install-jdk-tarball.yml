@@ -12,7 +12,7 @@
     group: root
     mode: "u=rwx,go=rx"
 
-- name: install JDK
+- name: install JDK via tarball file
   unarchive:
     src: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
     dest: "/usr/java"
