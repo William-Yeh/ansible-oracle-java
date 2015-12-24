@@ -12,11 +12,10 @@
   script: ../files/delete-messy-rpm-files.sh  {{ java_download_path }}
 
 
-- name: install JDK
-  command: rpm --force -Uvh  {{ jdk_tarball_file }}.rpm
-  args:
-    creates: "{{ java_download_path }}/jdk-{{ jdk_version }}"
-    chdir:   "{{ java_download_path }}"
+- name: install JDK via RPM file
+  yum:
+    name: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+    state: present
 
 
 - name: clean up - uninstall messy packages
