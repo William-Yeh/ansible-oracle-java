@@ -1,5 +1,4 @@
 - hosts: all
-  #sudo: True
   become: yes
   become_method: sudo
   tasks:
@@ -12,6 +11,5 @@
 
   vars:
     - java_version: 8
-    - java_subversion: 66
+    - java_subversion: 72
     - java_download_path: /tmp
-    - java_download_from_oracle: false
