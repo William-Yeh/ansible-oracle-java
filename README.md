@@ -33,7 +33,7 @@ User-configurable defaults:
 java_version: 8
 
 # which subversion?
-java_subversion: 66
+java_subversion: 72
 
 # which directory to put the download file (for CentOS families)?
 java_download_path: /tmp

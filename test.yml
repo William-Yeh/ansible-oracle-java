@@ -1,5 +1,4 @@
 - hosts: all
-  #sudo: True
   become: yes
   become_method: sudo
   tasks:
@@ -9,4 +8,4 @@
 
   vars:
     #java_version: 8
-    #java_subversion: 66
+    #java_subversion: 72

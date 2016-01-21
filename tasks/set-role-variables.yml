@@ -7,6 +7,13 @@
   set_fact:
     jdk_arch: "{{ 'i586' if ansible_architecture == 'i386' else 'x64'}}"
 
+- name: set internal vars for 1.8.0_72
+  set_fact:
+    jdk_version:      1.8.0_72
+    jdk_tarball_file: jdk-8u72-linux-{{ jdk_arch }}
+    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-{{ jdk_arch }}
+  when: java_version == 8 and java_subversion == 72
+
 - name: set internal vars for 1.8.0_66
   set_fact:
     jdk_version:      1.8.0_66
