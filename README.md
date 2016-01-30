@@ -7,14 +7,14 @@ williamyeh.oracle-java for Ansible Galaxy
 
 ## Summary
 
-Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/detail#/role/2851)**
+Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.com/williamyeh/oracle-java/)**
 
 This Ansible role has the following features for Oracle JDK:
 
  - Install JDK 7 or 8 version.
  - Install for CentOS and Debian/Ubuntu families.
 
-If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/list#/roles/1209).
+If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/smola/java/).
 
 
 ## Role Variables
