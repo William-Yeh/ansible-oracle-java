@@ -37,3 +37,7 @@ script:
     - sh -c "[ -s result-debian7     ]"
     - sh -c "[ -s result-centos7     ]"
     - sh -c "[ -s result-centos6     ]"
+
+notifications:
+    webhooks: https://galaxy.ansible.com/api/v1/notifications/
+
