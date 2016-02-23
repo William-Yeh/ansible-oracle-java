@@ -1,18 +1,23 @@
 ---
 # file: use-tarball.yml
-# Install Oracle JDK 1.x on distributions other than Red Hat family.
+# install Oracle JDK 1.x on distributions other than the CentOS/RHEL family
+#
+# See: http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html
 #
 
-- name: copy scripts to server
-  copy: src="../files/check-tarball-installed.sh"  dest="{{ java_download_path }}/"  mode="a+x"
+- name: mkdir for Java
+  file:
+    path: "/usr/java/jdk{{ jdk_version }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "u=rwx,go=rx"
 
-- name: check if specific version of Oracle JDK is installed?
-  shell: LC_ALL="en_US.UTF-8"  {{ java_download_path }}/check-tarball-installed.sh  "{{ jdk_version }}"
-  register: jdk_info
-  changed_when: false
-  failed_when: jdk_info.rc > 0
-
-#- debug: msg="{{ jdk_info }}"
-
-- include: install-jdk-tarball.yml
-  when: (jdk_info.stdout|from_json).not_found
+- name: install JDK via tarball file
+  unarchive:
+    src: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+    dest: "/usr/java"
+    owner: root
+    group: root
+    mode: "go-w"
+    copy: no

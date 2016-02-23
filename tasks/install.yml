@@ -1,0 +1,68 @@
+---
+# file: tasks/install.yml
+# Top-level installer for Oracle JDK.
+#
+
+
+- name: fetch .rpm or .tar.gz files from Oracle site
+  include: fetch.yml
+  when: java_download_from_oracle
+
+- block:
+
+    - name: copy RPM from local
+      copy:
+        src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.rpm"
+        dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+      when: ansible_pkg_mgr == "yum"
+
+    - name: copy tarball from local
+      copy:
+        src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.tar.gz"
+        dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+      when: ansible_pkg_mgr != "yum"
+
+  when: not java_download_from_oracle 
+
+
+
+- name: delegate to RPM installation process
+  include: use-rpm.yml
+  when: ansible_pkg_mgr == "yum"
+
+- name: delegate to raw tarball installation
+  include: use-tarball.yml
+  when: ansible_pkg_mgr != "yum"
+
+
+
+- name: link /usr/java/default
+  file: dest=/usr/java/default src="/usr/java/jdk{{ jdk_version }}" state=link
+
+- name: alternatives link for "java"
+  alternatives: name=java link=/usr/bin/java  path=/usr/java/default/bin/java
+
+- name: alternatives link for "javac"
+  alternatives: name=javac link=/usr/bin/javac  path=/usr/java/default/bin/javac
+
+- name: alternatives link for "jar"
+  alternatives: name=jar link=/usr/bin/jar  path=/usr/java/default/bin/jar
+
+- name: check if "java_sdk" target exists
+  stat: path=/usr/lib/jvm/java
+  register: filecheck
+
+- name: alternatives link for "java_sdk"
+  alternatives: name=java_sdk link=/usr/lib/jvm/java  path=/usr/java/default
+  when: filecheck.stat.exists
+
+
+
+- name: remove temporary downloaded files, if requested
+  file: path={{ item }} state=absent
+  with_items:
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+    - "{{ java_download_path }}/check-tarball-installed.sh"
+  ignore_errors: true
+  when: java_remove_download

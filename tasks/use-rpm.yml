@@ -1,15 +1,26 @@
 ---
 # file: tasks/use-rpm.yml
-# Configure Oracle JDK common settings.
+# install Oracle JDK 1.x on CentOS
+#
+# Adapted from: http://blog.trifork.com/2013/04/02/ansible-example-playbook-to-setup-jenkins-slave/
+# See also: http://java.dzone.com/articles/installing-oracle-java6-ubuntu
 #
 
-- name: check if specific version of Oracle JDK is installed?
-  script: ../files/check-rpm-installed.sh  "{{ jdk_version }}"
-  register: jdk_info
-  changed_when: false
-  failed_when: jdk_info.rc > 0
+- name: uninstall messy packages to avoid blocking conditions
+  script: ../files/uninstall-messy-jdk-packages.sh
 
-#- debug: msg="{{ jdk_info }}"
+- name: delete messy .rpm files to avoid blocking conditions
+  script: ../files/delete-messy-rpm-files.sh  {{ java_download_path }}
 
-- include: install-jdk-rpm.yml
-  when: (jdk_info.stdout|from_json).not_found
+
+- name: install JDK via RPM file
+  yum:
+    name: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+    state: present
+
+
+- name: clean up - uninstall messy packages
+  script: ../files/uninstall-messy-jdk-packages.sh
+
+- name: clean up - delete messy .rpm files
+  script: ../files/delete-messy-rpm-files.sh  {{ java_download_path }}
