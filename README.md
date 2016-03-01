@@ -14,7 +14,7 @@ This Ansible role has the following features for Oracle JDK:
  - Install JDK 7 or 8 version.
  - Install for CentOS and Debian/Ubuntu families.
 
-If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/smola/java/).
+If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/smola/java/) or [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java/).
 
 
 ## Role Variables
@@ -79,7 +79,7 @@ Simple example:
 
 ### (Optionally) pre-fetch .rpm and .tar.gz files
 
-For some reasons, you may want to pre-fetch .rpm and .tar.gz files as part of the playbook suite, instead of downloading from Oracle on-the-fly.
+For some reasons, you may want to pre-fetch .rpm and .tar.gz files *before the execution of this role*, instead of downloading from Oracle on-the-fly.
 
 To do this, put the file on the `{{ playbook_dir }}/files` directory in advance, and then set the `java_download_from_oracle` variable to `false`:
 
