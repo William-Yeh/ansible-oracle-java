@@ -24,4 +24,5 @@ RUN ansible-playbook-wrapper
 #
 
 VOLUME [ "/data" ]
-CMD cp /tmp/jdk-*.tar.gz /data/files
+CMD cp /tmp/jdk-*.tar.gz /data/files && \
+    cp /tmp/*.zip /data/files

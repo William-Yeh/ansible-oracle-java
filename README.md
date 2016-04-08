@@ -2,8 +2,7 @@
 williamyeh.oracle-java for Ansible Galaxy
 ============
 
-
-[![Circle CI](https://circleci.com/gh/William-Yeh/ansible-oracle-java.svg?style=shield)](https://circleci.com/gh/William-Yeh/ansible-oracle-java) [![Build Status](https://travis-ci.org/William-Yeh/ansible-oracle-java.svg?branch=master)](https://travis-ci.org/William-Yeh/ansible-oracle-java)
+[![Circle CI](https://circleci.com/gh/verhage/ansible-oracle-java/tree/master.svg?style=svg)](https://circleci.com/gh/verhage/ansible-oracle-java/tree/master) [![Build Status](https://travis-ci.org/verhage/ansible-oracle-java.svg?branch=master)](https://travis-ci.org/verhage/ansible-oracle-java)
 
 ## Summary
 
@@ -12,6 +11,7 @@ Role name in Ansible Galaxy: **[williamyeh.oracle-java](https://galaxy.ansible.c
 This Ansible role has the following features for Oracle JDK:
 
  - Install JDK 7 or 8 version.
+ - Install optional Java Cryptography Extensions (JCE)
  - Install for CentOS and Debian/Ubuntu families.
 
 If you prefer OpenJDK, try alternatives such as [smola.java](https://galaxy.ansible.com/smola/java/) or [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java/).
@@ -45,6 +45,9 @@ java_download_from_oracle: true
 
 # remove temporary downloaded files?
 java_remove_download: true
+
+# install JCE?
+java_install_jce: false
 ```
 
 For other configurable internals, read `tasks/set-role-variables.yml` file; for example, supported `java_version`/`java_subversion` combinations.
@@ -103,8 +106,6 @@ To do this, put the file on the `{{ playbook_dir }}/files` directory in advance,
 
 
 ## Dependencies
-
-None.
 
 
 ## License

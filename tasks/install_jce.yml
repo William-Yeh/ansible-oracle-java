@@ -1,0 +1,24 @@
+---
+# Installation script for Java Cryptography Extensions (JCE)
+
+- name: install unzip
+  package: name=unzip state=present
+
+- name: unzip JCE
+  unarchive:
+    src: "{{ java_download_path }}/{{ jce_zip_file }}"
+    dest: "{{ java_download_path }}"
+    copy: no
+
+- name: install local_policy.jar
+  copy:
+    src: "{{ java_download_path }}/{{ jce_zip_folder }}/local_policy.jar"
+    dest: "/usr/java/jdk{{ jdk_version }}/jre/lib/security/local_policy.jar"
+    remote_src: True
+
+- name: install US_export_policy.jar
+  copy:
+    src: "{{ java_download_path }}/{{ jce_zip_folder }}/US_export_policy.jar"
+    dest: "/usr/java/jdk{{ jdk_version }}/jre/lib/security/US_export_policy.jar"
+    remote_src: True
+

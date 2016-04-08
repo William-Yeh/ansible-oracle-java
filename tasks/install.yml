@@ -22,6 +22,12 @@
         dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
       when: ansible_pkg_mgr != "yum"
 
+    - name: copy JCE zip from local
+      copy:
+        src: "{{ playbook_dir }}/files/{{ jce_zip_file }}"
+        dest: "{{ java_download_path }}/{{ jce_zip_file }}"
+      when: java_install_jce
+
   when: not java_download_from_oracle 
 
 
@@ -30,10 +36,13 @@
   include: use-rpm.yml
   when: ansible_pkg_mgr == "yum"
 
-- name: delegate to raw tarball installation
+- name: delegate to raw tarball installation process
   include: use-tarball.yml
   when: ansible_pkg_mgr != "yum"
 
+- name: delegate to JCE zip installation process
+  include: install_jce.yml
+  when: java_install_jce
 
 
 - name: link /usr/java/default
@@ -64,5 +73,7 @@
     - "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
     - "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
     - "{{ java_download_path }}/check-tarball-installed.sh"
+    - "{{ java_download_path }}/{{ jce_zip_file }}"
+    - "{{ java_download_path }}/{{ jce_zip_folder }}"
   ignore_errors: true
   when: java_remove_download

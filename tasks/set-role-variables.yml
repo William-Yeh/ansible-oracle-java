@@ -70,6 +70,17 @@
     jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u31-b13/jdk-8u31-linux-{{ jdk_arch }}
   when: java_version == 8 and java_subversion == 31
 
+- name: set JCE zip to use for 1.8.x JCE
+  set_fact:
+    jce_zip_file: jce_policy-8.zip
+    jce_zip_folder: UnlimitedJCEPolicyJDK8
+  when: java_version == 8 and java_install_jce
+
+- name: set internal vars for 1.8.x JCE
+  set_fact:
+    jce_zip_url:    http://download.oracle.com/otn-pub/java/jce/8/{{ jce_zip_file }}
+  when: java_version == 8 and java_install_jce
+
 
 
 
@@ -86,3 +97,14 @@
     jdk_tarball_file: jdk-7u75-linux-{{ jdk_arch }}
     jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-{{ jdk_arch }}
   when: java_version == 7 and java_subversion == 75
+
+- name: set JCE zip file to use for 1.7.x JCE
+  set_fact:
+    jce_zip_file: UnlimitedJCEPolicyJDK7.zip
+    jce_zip_folder: UnlimitedJCEPolicy
+  when: java_version == 7 and java_install_jce
+
+- name: set internal vars for 1.7.x JCE
+  set_fact:
+    jce_zip_url:    http://download.oracle.com/otn-pub/java/jce/7/{{ jce_zip_file }}
+  when: java_version == 7 and java_install_jce

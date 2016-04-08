@@ -11,6 +11,10 @@
   fail: msg="ERROR - required variable 'java_subversion' missing."
   when: java_subversion is not defined
 
+- name: precondition - java_install_jce
+  fail: msg="ERROR - required variable 'java_install_jce' missing."
+  when: java_install_jce is not defined
+
 - include: set-role-variables.yml
 
 

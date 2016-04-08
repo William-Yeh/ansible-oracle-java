@@ -15,3 +15,10 @@
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
   when: ansible_pkg_mgr != "yum"
+
+- name: get JCE
+  get_url:
+    url:     "{{ jce_zip_url }}"
+    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+    dest:    "{{ java_download_path }}/{{ jce_zip_file }}"
+  when: java_install_jce

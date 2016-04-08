@@ -39,5 +39,6 @@ test:
     - sh -c "[ -s result-centos7     ]"
     - sh -c "[ -s result-centos6     ]"
 
-    - echo "==> Saving .rpm and .tar.gz to CircleCI for reference..."
+    - echo "==> Saving artifacts to CircleCI for reference..."
     - cp files/jdk-* $CIRCLE_ARTIFACTS
+    - cp files/*.zip $CIRCLE_ARTIFACTS

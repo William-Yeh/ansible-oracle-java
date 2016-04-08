@@ -1,3 +1,4 @@
+---
 - hosts: all
   become: yes
   become_method: sudo
@@ -9,3 +10,4 @@
   vars:
     #java_version: 8
     #java_subversion: 77
+    java_install_jce: true
