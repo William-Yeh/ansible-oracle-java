@@ -20,8 +20,12 @@ case "$TRAVIS_OS_NAME" in
     sh -c "[ -s result-centos6     ]"
   ;;
   osx)
-    echo "==> Running tests using ansible-playbook on Mac OS X"
+    echo "==> Running tests using ansible-playbook on Mac OS X..."
     ansible-playbook test.yml --extra-vars test_hosts=localhost
+
+    echo "==> Validating the test results..."
+    java -version  2> result-macosx
+    sh -c "[ -s result-macosx      ]"
   ;;
   *)
     echo "Unknown value of TRAVIS_OS_NAME: '$TRAVIS_OS_NAME'" >&2

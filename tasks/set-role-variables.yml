@@ -3,134 +3,123 @@
 # set necessary role variables.
 #
 
+
+- name: set general internal vars
+  set_fact:
+    jdk_version: "1.{{ java_version }}.0_{{ java_subversion }}"
+
+
+#
+# platform-specific variables
+#
+
 - name: set java architecture
   set_fact:
-    jdk_arch: "{{ 'i586' if ansible_architecture == 'i386' else 'x64'}}"
+    jdk_arch: "{{ 'i586'  if ansible_architecture == 'i386' else 'x64' }}"
+
+- name: set java OS for Linux
+  set_fact:
+    jdk_os: linux
+  when: ansible_system == 'Linux'
+
+- name: set java OS for Mac OS X
+  set_fact:
+    jdk_os: macosx
+  when: ansible_os_family == 'Darwin'
+
+
+#
+# version-specific variables
+#
 
 - name: set internal vars for 1.8.0_77
   set_fact:
-    jdk_version:      1.8.0_77
-    jdk_tarball_file: jdk-8u77-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u77-b03/jdk-8u77-linux-{{ jdk_arch }}
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b03"
   when: java_version == 8 and java_subversion == 77
 
 - name: set internal vars for 1.8.0_74
   set_fact:
-    jdk_version:      1.8.0_74
-    jdk_tarball_file: jdk-8u74-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u74-b02/jdk-8u74-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 74 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b02"
+  when: java_version == 8 and java_subversion == 74
+
+- name: set internal vars for 1.8.0_73
+  set_fact:
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b02"
+  when: java_version == 8 and java_subversion == 73
 
 - name: set internal vars for 1.8.0_72
   set_fact:
-    jdk_version:      1.8.0_72
-    jdk_tarball_file: jdk-8u72-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 72 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b15"
+  when: java_version == 8 and java_subversion == 72
 
 - name: set internal vars for 1.8.0_66
   set_fact:
-    jdk_version:      1.8.0_66
-    jdk_tarball_file: jdk-8u66-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jdk-8u66-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 66 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b17"
+  when: java_version == 8 and java_subversion == 66
 
 - name: set internal vars for 1.8.0_65
   set_fact:
-    jdk_version:      1.8.0_65
-    jdk_tarball_file: jdk-8u65-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 65 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b17"
+  when: java_version == 8 and java_subversion == 65
 
 - name: set internal vars for 1.8.0_60
   set_fact:
-    jdk_version:      1.8.0_60
-    jdk_tarball_file: jdk-8u60-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 60 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b27"
+  when: java_version == 8 and java_subversion == 60
 
 - name: set internal vars for 1.8.0_51
   set_fact:
-    jdk_version:      1.8.0_51
-    jdk_tarball_file: jdk-8u51-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 51 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b16"
+  when: java_version == 8 and java_subversion == 51
 
 - name: set internal vars for 1.8.0_45
   set_fact:
-    jdk_version:      1.8.0_45
-    jdk_tarball_file: jdk-8u45-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 45 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b14"
+  when: java_version == 8 and java_subversion == 45
 
 - name: set internal vars for 1.8.0_31
   set_fact:
-    jdk_version:      1.8.0_31
-    jdk_tarball_file: jdk-8u31-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u31-b13/jdk-8u31-linux-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 31 and ansible_os_family != 'Darwin'
-
-- name: set JCE zip to use for 1.8.x JCE
-  set_fact:
-    jce_zip_file: jce_policy-8.zip
-    jce_zip_folder: UnlimitedJCEPolicyJDK8
-  when: java_version == 8 and java_install_jce
-
-- name: set internal vars for 1.8.x JCE
-  set_fact:
-    jce_zip_url:    http://download.oracle.com/otn-pub/java/jce/8/{{ jce_zip_file }}
-  when: java_version == 8 and java_install_jce
-
-
-
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b13"
+  when: java_version == 8 and java_subversion == 31
 
 - name: set internal vars for 1.7.0_80
   set_fact:
-    jdk_version:      1.7.0_80
-    jdk_tarball_file: jdk-7u80-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-{{ jdk_arch }}
-  when: java_version == 7 and java_subversion == 80 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b15"
+  when: java_version == 7 and java_subversion == 80
 
 - name: set internal vars for 1.7.0_75
   set_fact:
-    jdk_version:      1.7.0_75
-    jdk_tarball_file: jdk-7u75-linux-{{ jdk_arch }}
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-{{ jdk_arch }}
-  when: java_version == 7 and java_subversion == 75 and ansible_os_family != 'Darwin'
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b13"
+  when: java_version == 7 and java_subversion == 75
 
-- name: set internal vars for 1.8.0_73 on Mac OS X
+
+
+- name: compose final info for downloading files, part 1
   set_fact:
-    jdk_version:      "1.{{ java_version }}.0_{{ java_subversion }}"
-    jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-macosx-{{ jdk_arch }}"
-    jdk_tarball_url:  http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-macosx-{{ jdk_arch }}
-  when: java_version == 8 and java_subversion == 73 and ansible_os_family == 'Darwin'
+    jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-{{ jdk_os }}-{{ jdk_arch }}"
 
-- name: set internal vars for 1.8.0_74 on Mac OS X
+- name: compose final info for downloading files, part 2
   set_fact:
-    jdk_version:      "1.{{ java_version }}.0_{{ java_subversion }}"
-    jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-macosx-{{ jdk_arch }}"
-    jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ java_version }}u{{ java_subversion }}-b02/jdk-{{ java_version }}u{{ java_subversion }}-macosx-{{ jdk_arch }}"
-  when: java_version == 8 and java_subversion == 74 and ansible_os_family == 'Darwin'
+    jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version_detail }}/{{ jdk_tarball_file }}"
 
-- name: set internal vars for 1.8.0_77 on Mac OS X
+
+#
+# JCE variables
+#
+
+- name: set JCE variables
   set_fact:
-    jdk_version:      "1.{{ java_version }}.0_{{ java_subversion }}"
-    jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-macosx-{{ jdk_arch }}"
-    jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ java_version }}u{{ java_subversion }}-b03/jdk-{{ java_version }}u{{ java_subversion }}-macosx-{{ jdk_arch }}"
-  when: java_version == 8 and java_subversion == 77 and ansible_os_family == 'Darwin'
+    jce_zip_file:   "jce_policy-{{ java_version }}.zip"
+    jce_zip_folder: "UnlimitedJCEPolicyJDK{{ java_version }}"
 
-
-- name: set JCE zip file to use for 1.7.x JCE
+- name: set JCE download file
   set_fact:
-    jce_zip_file: UnlimitedJCEPolicyJDK7.zip
-    jce_zip_folder: UnlimitedJCEPolicy
-  when: java_version == 7 and java_install_jce
+    jce_zip_url: "http://download.oracle.com/otn-pub/java/jce/{{ java_version }}/{{ jce_zip_file }}"
 
-- name: set internal vars for 1.7.x JCE
-  set_fact:
-    jce_zip_url:    http://download.oracle.com/otn-pub/java/jce/7/{{ jce_zip_file }}
-  when: java_version == 7 and java_install_jce
 
+#
+# directories
+#
 
 - name: set java installation directory on Debian platforms
   set_fact:

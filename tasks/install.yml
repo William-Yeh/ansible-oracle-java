@@ -49,48 +49,49 @@
   when: java_install_jce
 
 
-- name: link "{{ java_install_dir }}/{{ java_default_link_name }}"
-  file:
-    dest: "{{ java_install_dir }}/{{ java_default_link_name }}"
-    src: "{{ java_install_dir }}/jdk{{ jdk_version }}"
-    state: link
+- block:
+
+    # No link creation is necessary on Mac OS X -- 
+    # the package installer automatically creates symlinks in /usr/bin.
+
+    - name: link "{{ java_install_dir }}/{{ java_default_link_name }}"
+      file:
+        dest: "{{ java_install_dir }}/{{ java_default_link_name }}"
+        src: "{{ java_install_dir }}/jdk{{ jdk_version }}"
+        state: link
+
+    - name: alternatives link for "java"
+      alternatives:
+        name: java
+        link: /usr/bin/java
+        path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/java"
+
+    - name: alternatives link for "javac"
+      alternatives:
+        name: javac
+        link: /usr/bin/javac
+        path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/javac"
+
+    - name: alternatives link for "jar"
+      alternatives:
+        name: jar
+        link: /usr/bin/jar
+        path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/jar"
+
+    - name: check if "java_sdk" target exists
+      stat: path=/usr/lib/jvm/java
+      register: filecheck
+
+    - name: alternatives link for "java_sdk"
+      alternatives:
+        name: java_sdk
+        link: /usr/lib/jvm/java
+        path: "{{ java_install_dir }}/{{ java_default_link_name }}"
+      when: filecheck and filecheck.stat.exists
+
   when: ansible_os_family != "Darwin"
 
-- name: alternatives link for "java"
-  alternatives:
-    name: java
-    link: /usr/bin/java
-    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/java"
-  when: ansible_os_family != "Darwin"
 
-- name: alternatives link for "javac"
-  alternatives:
-    name: javac
-    link: /usr/bin/javac
-    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/javac"
-  when: ansible_os_family != "Darwin"
-
-- name: alternatives link for "jar"
-  alternatives:
-    name: jar
-    link: /usr/bin/jar
-    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/jar"
-  when: ansible_os_family != "Darwin"
-
-# No link creation is necessary on Mac OS X -- the package installer automatically creates
-# symlinks in /usr/bin.
-
-- name: check if "java_sdk" target exists
-  stat: path=/usr/lib/jvm/java
-  register: filecheck
-  when: ansible_os_family != "Darwin"
-
-- name: alternatives link for "java_sdk"
-  alternatives:
-    name: java_sdk
-    link: /usr/lib/jvm/java
-    path: "{{ java_install_dir }}/{{ java_default_link_name }}"
-  when: ansible_os_family != "Darwin" and filecheck and filecheck.stat.exists
 
 - name: remove temporary downloaded files, if requested
   file: path={{ item }} state=absent
