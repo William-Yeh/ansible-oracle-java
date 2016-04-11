@@ -94,13 +94,15 @@
 
 
 
-- name: compose final info for downloading files, part 1
+- name: compose filename, if necessary
   set_fact:
     jdk_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-{{ jdk_os }}-{{ jdk_arch }}"
+  when: jdk_tarball_file is not defined
 
-- name: compose final info for downloading files, part 2
+- name: compose url for downloading file, if necessary
   set_fact:
     jdk_tarball_url:  "http://download.oracle.com/otn-pub/java/jdk/{{ jdk_version_detail }}/{{ jdk_tarball_file }}"
+  when: jdk_version_detail is defined
 
 
 #
@@ -134,7 +136,7 @@
     java_default_link_name: default
   when: ansible_os_family == "Darwin"
 
-- name: set java installation directory on non-Debian platforms platforms
+- name: set java installation directory on non-Debian platforms
   set_fact:
     java_install_dir: /usr/java
     java_default_link_name: default
