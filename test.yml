@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: "{{ test_hosts|default('all') }}"
   become: yes
   become_method: sudo
   tasks:

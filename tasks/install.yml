@@ -34,44 +34,70 @@
 
 - name: delegate to RPM installation process
   include: use-rpm.yml
-  when: ansible_pkg_mgr == "yum"
+  when: ansible_pkg_mgr == "yum" and ansible_os_family != 'Darwin'
 
 - name: delegate to raw tarball installation process
   include: use-tarball.yml
-  when: ansible_pkg_mgr != "yum"
+  when: ansible_pkg_mgr != "yum" and ansible_os_family != 'Darwin'
+
+- name: delegate to Mac OS X dmg installation
+  include: use-dmg.yml
+  when: ansible_os_family == 'Darwin'
 
 - name: delegate to JCE zip installation process
   include: install_jce.yml
   when: java_install_jce
 
 
-- name: link /usr/java/default
-  file: dest=/usr/java/default src="/usr/java/jdk{{ jdk_version }}" state=link
+- name: link "{{ java_install_dir }}/{{ java_default_link_name }}"
+  file:
+    dest: "{{ java_install_dir }}/{{ java_default_link_name }}"
+    src: "{{ java_install_dir }}/jdk{{ jdk_version }}"
+    state: link
+  when: ansible_os_family != "Darwin"
 
 - name: alternatives link for "java"
-  alternatives: name=java link=/usr/bin/java  path=/usr/java/default/bin/java
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/java"
+  when: ansible_os_family != "Darwin"
 
 - name: alternatives link for "javac"
-  alternatives: name=javac link=/usr/bin/javac  path=/usr/java/default/bin/javac
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/javac"
+  when: ansible_os_family != "Darwin"
 
 - name: alternatives link for "jar"
-  alternatives: name=jar link=/usr/bin/jar  path=/usr/java/default/bin/jar
+  alternatives:
+    name: jar
+    link: /usr/bin/jar
+    path: "{{ java_install_dir }}/{{ java_default_link_name }}/bin/jar"
+  when: ansible_os_family != "Darwin"
+
+# No link creation is necessary on Mac OS X -- the package installer automatically creates
+# symlinks in /usr/bin.
 
 - name: check if "java_sdk" target exists
   stat: path=/usr/lib/jvm/java
   register: filecheck
+  when: ansible_os_family != "Darwin"
 
 - name: alternatives link for "java_sdk"
-  alternatives: name=java_sdk link=/usr/lib/jvm/java  path=/usr/java/default
-  when: filecheck.stat.exists
-
-
+  alternatives:
+    name: java_sdk
+    link: /usr/lib/jvm/java
+    path: "{{ java_install_dir }}/{{ java_default_link_name }}"
+  when: ansible_os_family != "Darwin" and filecheck and filecheck.stat.exists
 
 - name: remove temporary downloaded files, if requested
   file: path={{ item }} state=absent
   with_items:
     - "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
     - "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
+    - "{{ java_download_path }}/{{ jdk_tarball_file }}.dmg"
     - "{{ java_download_path }}/check-tarball-installed.sh"
     - "{{ java_download_path }}/{{ jce_zip_file }}"
     - "{{ java_download_path }}/{{ jce_zip_folder }}"

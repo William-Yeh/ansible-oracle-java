@@ -1,0 +1,20 @@
+---
+# file: use-tarball.yml
+# install Oracle JDK 1.x on Mac OS X
+#
+# See: #      https://docs.oracle.com/javase/8/docs/technotes/guides/install/mac_jdk.html
+#
+
+- name: mount the downloaded dmg
+  shell: hdiutil attach "{{ java_download_path }}/{{ jdk_tarball_file }}.dmg"
+
+- name: install the pkg file from the dmg
+  become: yes
+  become_method: sudo
+  shell: >
+    installer
+    -pkg "/Volumes/JDK {{ java_version }} Update {{ java_subversion }}/JDK {{ java_version }} Update {{ java_subversion }}.pkg"
+    -target /
+
+- name: unmount the downloaded dmg
+  shell: hdiutil detach "/Volumes/JDK {{ java_version }} Update {{ java_subversion }}"
