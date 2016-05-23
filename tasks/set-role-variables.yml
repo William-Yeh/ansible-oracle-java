@@ -92,6 +92,10 @@
     jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b13"
   when: java_version == 7 and java_subversion == 75
 
+- name: set internal vars for generic Java version
+  set_fact:
+    jdk_version_detail: "{{ java_version }}u{{ java_subversion }}-b{{ java_build }}"
+  when: jdk_version_detail is not defined and java_build is defined
 
 
 - name: compose filename, if necessary

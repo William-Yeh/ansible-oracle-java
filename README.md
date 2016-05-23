@@ -52,6 +52,20 @@ java_install_jce: false
 
 For other configurable internals, read `tasks/set-role-variables.yml` file; for example, supported `java_version`/`java_subversion` combinations.
 
+If you want to install a Java release which is not supported out-of-the-box, you have to specify the corresponding Java build number in the variable `java_build` in addition to `java_version` and `java_subversion`, e.g.
+```yaml
+---
+- hosts: all
+
+  roles:
+    - williamyeh.oracle-java
+
+  vars:
+    java_version: 8
+    java_subversion: 91
+    java_build: 14
+```
+
 
 ### Customized variables, if absolutely necessary
 
