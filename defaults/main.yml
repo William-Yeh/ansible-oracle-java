@@ -17,3 +17,5 @@ java_download_path: /tmp
 java_download_from_oracle: true
 java_remove_download: true
 java_install_jce: false
+
+java_set_javahome: false

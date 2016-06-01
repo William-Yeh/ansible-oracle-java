@@ -51,6 +51,21 @@
 
 - block:
 
+    - name: make sure /etc/profile.d exists
+      file: path=/etc/profile.d  state=directory
+
+    - name: export JAVA_HOME
+      template:
+        src:  ../templates/java_home.sh.j2
+        dest: /etc/profile.d/java_home.sh
+        mode: "a+x"
+
+  when: java_set_javahome
+
+
+
+- block:
+
     # No link creation is necessary on Mac OS X -- 
     # the package installer automatically creates symlinks in /usr/bin.
 

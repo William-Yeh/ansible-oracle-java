@@ -33,7 +33,7 @@ User-configurable defaults:
 java_version: 8
 
 # which subversion?
-java_subversion: 77
+java_subversion: 92
 
 # which directory to put the download file?
 java_download_path: /tmp
@@ -45,6 +45,9 @@ java_download_from_oracle: true
 
 # remove temporary downloaded files?
 java_remove_download: true
+
+# set $JAVA_HOME?
+java_set_javahome: false
 
 # install JCE?
 java_install_jce: false
