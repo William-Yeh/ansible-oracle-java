@@ -12,7 +12,7 @@ This Ansible role has the following features for Oracle JDK:
 
  - Install JDK 7 or 8 version.
  - Install optional Java Cryptography Extensions (JCE)
- - Install for CentOS, Debian/Ubuntu, and Mac OS X families.
+ - Install for CentOS, Debian/Ubuntu, SUSE, and Mac OS X families.
 
 If you prefer OpenJDK, try alternatives such as [geerlingguy.java](https://galaxy.ansible.com/geerlingguy/java/) or [smola.java](https://galaxy.ansible.com/smola/java/).
 

@@ -13,10 +13,28 @@
   script: ../files/delete-messy-rpm-files.sh  {{ java_download_path }}
 
 
-- name: install JDK via RPM file
+- name: install JDK via RPM file with yum
   yum:
     name: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
     state: present
+  when: ansible_pkg_mgr == "yum"
+
+# Cannot use zypper module: https://github.com/ansible/ansible-modules-extras/issues/2094
+# Following https://en.opensuse.org/SDB:Installing_Java
+- block:
+    - name: symlink /usr/sbin/update-alternatives to /usr/sbin/alternatives
+      file: src=/usr/sbin/update-alternatives dest=/usr/sbin/alternatives state=link
+
+    - name: check if pkg already installed
+      shell: rpm -ql $(rpm -qp "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm")
+      register: reg_validate
+      failed_when: reg_validate.rc != 0 and reg_validate.rc != 1
+
+    - name: install JDK via RPM file with rpm (for zypper)
+      shell: rpm -ivh --nodeps "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+      when: reg_validate.rc != 0
+      #shell: zypper --no-gpg-checks --non-interactive install "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
+  when: ansible_pkg_mgr == "zypper"
 
 
 - name: clean up - uninstall messy packages
