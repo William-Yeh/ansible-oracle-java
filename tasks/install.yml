@@ -14,13 +14,13 @@
       copy:
         src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.rpm"
         dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
-      when: ansible_pkg_mgr == "yum"
+      when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "zypper"
 
     - name: copy tarball from local
       copy:
         src: "{{ playbook_dir }}/files/{{ jdk_tarball_file }}.tar.gz"
         dest: "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
-      when: ansible_pkg_mgr != "yum"
+      when: ansible_pkg_mgr != "yum" and ansible_pkg_mgr != "zypper"
 
     - name: copy JCE zip from local
       copy:
@@ -28,17 +28,17 @@
         dest: "{{ java_download_path }}/{{ jce_zip_file }}"
       when: java_install_jce
 
-  when: not java_download_from_oracle 
+  when: not java_download_from_oracle
 
 
 
 - name: delegate to RPM installation process
   include: use-rpm.yml
-  when: ansible_pkg_mgr == "yum" and ansible_os_family != 'Darwin'
+  when: (ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "zypper") and ansible_os_family != 'Darwin'
 
 - name: delegate to raw tarball installation process
   include: use-tarball.yml
-  when: ansible_pkg_mgr != "yum" and ansible_os_family != 'Darwin'
+  when: ansible_pkg_mgr != "yum" and ansible_pkg_mgr != "zypper" and ansible_os_family != 'Darwin'
 
 - name: delegate to Mac OS X dmg installation
   include: use-dmg.yml

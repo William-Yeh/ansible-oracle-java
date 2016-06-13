@@ -7,14 +7,15 @@
     url:     "{{ jdk_tarball_url }}.rpm"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "{{ java_download_path }}/{{ jdk_tarball_file }}.rpm"
-  when: ansible_pkg_mgr == "yum" and ansible_os_family != 'Darwin'
+  when: (ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "zypper") and ansible_os_family != 'Darwin'
+
 
 - name: get JDK tarball (as tar.gz file)
   get_url:
     url:     "{{ jdk_tarball_url }}.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
-  when: ansible_pkg_mgr != "yum" and ansible_os_family != 'Darwin'
+  when: ansible_pkg_mgr != "yum" or ansible_pkg_mgr != "zypper" and ansible_os_family != 'Darwin'
 
 - name: get JDK package (as Mac OS X .dmg)
   get_url:
