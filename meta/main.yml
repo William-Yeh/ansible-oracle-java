@@ -21,7 +21,10 @@ galaxy_info:
           versions:
               - 6
               - 7
-        - name: Suse
+        - name: opensuse
+          versions:
+              - all
+        - name: SLES
           versions:
               - all
         - name: Darwin
