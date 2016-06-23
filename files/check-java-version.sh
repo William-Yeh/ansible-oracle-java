@@ -6,7 +6,7 @@
 
 PACKAGE="\"$1\""
 
-line=$(java -version 2>&1  | grep $PACKAGE | wc -l)
+line=$(java -version 2>&1  | grep $PACKAGE | grep -iv openjdk | wc -l)
 #echo $line
 
 
