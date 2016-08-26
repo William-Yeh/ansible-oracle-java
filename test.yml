@@ -9,5 +9,5 @@
 
   vars:
     #java_version: 8
-    #java_subversion: 92
+    java_subversion: 102
     java_install_jce: true

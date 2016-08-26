@@ -33,7 +33,7 @@ User-configurable defaults:
 java_version: 8
 
 # which subversion?
-java_subversion: 92
+java_subversion: 102
 
 # which directory to put the download file?
 java_download_path: /tmp
