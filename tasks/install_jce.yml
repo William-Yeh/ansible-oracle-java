@@ -1,24 +1,72 @@
 ---
 # Installation script for Java Cryptography Extensions (JCE)
 
-- name: install unzip
-  package: name=unzip state=present
+- block:
+  - name: Find Java Home in Mac
+    shell: /usr/libexec/java_home
+    register: java_home_cmd
+    changed_when: false
+  - name: Set java_home
+    set_fact: java_home={{ java_home_cmd.stdout }}
+    when: java_home_cmd.skipped is not defined and java_home is not defined
+  when: ansible_os_family == "Darwin"
 
-- name: unzip JCE
-  unarchive:
-    src: "{{ java_download_path }}/{{ jce_zip_file }}"
-    dest: "{{ java_download_path }}"
-    copy: no
+- block:
+  - name: Make sure 'which' is installed
+    package: name=which state=present
+    when: ansible_os_family == "RedHat"
+  - name: Find Java Home in Linux
+    shell: dirname $(dirname $(readlink -e $(which java)))
+    register: java_home_cmd
+    changed_when: false
+  - name: Set java_home
+    set_fact: java_home={{ java_home_cmd.stdout }}
+    when: java_home_cmd.skipped is not defined and java_home is not defined
+  when: ansible_os_family != "Darwin"
 
-- name: install local_policy.jar
-  copy:
-    src: "{{ java_download_path }}/{{ jce_zip_folder }}/local_policy.jar"
-    dest: "{{ java_install_dir }}/jdk{{ jdk_version }}/jre/lib/security/local_policy.jar"
-    remote_src: True
+- name: Check if JCE is already installed
+  shell: "{{ java_home }}/bin/jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength(\"RC5\") >= 256);'"
+  changed_when: false
+  ignore_errors: true
+  register: jce_check
 
-- name: install US_export_policy.jar
-  copy:
-    src: "{{ java_download_path }}/{{ jce_zip_folder }}/US_export_policy.jar"
-    dest: "{{ java_install_dir }}/jdk{{ jdk_version }}/jre/lib/security/US_export_policy.jar"
-    remote_src: True
+- block:
+  - include: fetch_jce.yml
+    when: java_download_from_oracle
 
+  - name: copy JCE zip from local
+    copy:
+      src: "{{ playbook_dir }}/files/{{ jce_zip_file }}"
+      dest: "{{ java_download_path }}/{{ jce_zip_file }}"
+    when: not java_download_from_oracle
+
+  - name: install unzip
+    package: name=unzip state=present
+    when: ansible_os_family != "Darwin"
+
+  - name: unzip JCE
+    unarchive:
+      src: "{{ java_download_path }}/{{ jce_zip_file }}"
+      dest: "{{ java_download_path }}/"
+      copy: no
+      creates: "{{ java_download_path }}/{{ jce_zip_folder }}"
+
+  - name: install JCE policies
+    copy:
+      src: "{{ java_download_path }}/{{ jce_zip_folder }}/{{ item }}"
+      dest: "{{ java_home }}/jre/lib/security/{{ item }}"
+      remote_src: True
+      mode: 0664
+    become: true
+    with_items:
+      - local_policy.jar
+      - US_export_policy.jar
+
+  - name: remove temporary downloaded JCE files, if requested
+    file: path={{ item }} state=absent
+    with_items:
+      - "{{ java_download_path }}/{{ jce_zip_file }}"
+      - "{{ java_download_path }}/{{ jce_zip_folder }}"
+    ignore_errors: true
+    when: java_remove_download
+  when: jce_check.stdout == "false"

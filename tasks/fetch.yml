@@ -15,7 +15,7 @@
     url:     "{{ jdk_tarball_url }}.tar.gz"
     headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
     dest:    "{{ java_download_path }}/{{ jdk_tarball_file }}.tar.gz"
-  when: ansible_pkg_mgr != "yum" or ansible_pkg_mgr != "zypper" and ansible_os_family != 'Darwin'
+  when: ansible_pkg_mgr != "yum" and ansible_pkg_mgr != "zypper" and ansible_os_family != 'Darwin'
 
 - name: get JDK package (as Mac OS X .dmg)
   get_url:
@@ -24,9 +24,3 @@
     dest:    "{{ java_download_path }}/{{ jdk_tarball_file }}.dmg"
   when: ansible_os_family == 'Darwin'
 
-- name: get JCE
-  get_url:
-    url:     "{{ jce_zip_url }}"
-    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
-    dest:    "{{ java_download_path }}/{{ jce_zip_file }}"
-  when: java_install_jce

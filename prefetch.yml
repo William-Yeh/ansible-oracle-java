@@ -5,6 +5,8 @@
     - include: tasks/set-role-variables.yml
     - name: fetch .rpm or .tar.gz files from Oracle site
       include: tasks/fetch.yml
+    - name: fetch JCE files from Oracle site
+      include: tasks/fetch_jce.yml
 
   #vars_files:
   #  - 'defaults/main.yml'

@@ -153,6 +153,7 @@
   set_fact:
     java_install_dir: /usr/lib/jvm
     java_default_link_name: default-java
+    java_home: /usr/lib/jvm/default-java
   when: ansible_os_family == "Debian"
 
 - name: set java installation directory on Mac OS X
@@ -166,4 +167,5 @@
   set_fact:
     java_install_dir: /usr/java
     java_default_link_name: default
+    java_home: /usr/java/default
   when: ansible_os_family != "Debian" and ansible_os_family != "Darwin"

@@ -36,3 +36,7 @@
 
 - include: install.yml
   when: (jdk_info.stdout|from_json).not_found
+
+- name: delegate to JCE zip installation process
+  include: install_jce.yml
+  when: java_install_jce
